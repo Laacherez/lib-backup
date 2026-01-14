@@ -2,6 +2,7 @@
 import os
 import argparse
 import numpy as np
+import libmobility as lm
 
 import parameters as params
 
@@ -76,9 +77,17 @@ def main():
         g=float(params.g),
     )
 
+    nbody_wall = lm.NBody("open", "open", "single_wall")
+    nbody_wall.setParameters(wallHeight=0.0)
+    nbody_wall.initialize(viscosity=params.eta, hydrodynamicRadius=params.a)
+    pos = np.column_stack((0, d_val), (0, 0), (h_val, h_val))
     # ---- run ----
-    # Example placeholder:
     with open(os.path.join(pair_dir, "run.txt"), "w") as f:
+
+        # write all trajectory outputs.
+        # compute their displacements.
+        # while the distance is not below a criterion for three runs, convtinue.
+        # save the histogram of displacements along with parameters and total number of runs in the home.
         f.write(f"SLURM_ARRAY_TASK_ID={k}\n")
         f.write(f"d[{i}]={d_val:.6e}\n")
         f.write(f"h[{j}]={h_val:.6e}\n")
@@ -86,4 +95,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
