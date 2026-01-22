@@ -1,0 +1,1 @@
+sbatch --array=0-99 submit_array.sh
